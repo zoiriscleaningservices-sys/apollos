@@ -10,33 +10,40 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile Navigation
     const mobileToggle = document.getElementById('mobile-toggle');
     const nav = document.querySelector('.nav');
+    const header = document.getElementById('header');
     const navLinks = document.querySelectorAll('.nav-list a');
+
+    function openMenu() {
+        mobileToggle.classList.add('active');
+        nav.classList.add('active');
+        header.classList.add('menu-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        mobileToggle.classList.remove('active');
+        nav.classList.remove('active');
+        header.classList.remove('menu-open');
+        document.body.style.overflow = '';
+    }
 
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
-            mobileToggle.classList.toggle('active');
-            nav.classList.toggle('active');
-            
-            // Prevent scrolling when menu is open
-            if(nav.classList.contains('active')){
-                document.body.style.overflow = 'hidden';
+            if (nav.classList.contains('active')) {
+                closeMenu();
             } else {
-                document.body.style.overflow = '';
+                openMenu();
             }
         });
     }
 
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            mobileToggle.classList.remove('active');
-            nav.classList.remove('active');
-            document.body.style.overflow = '';
+            if (mobileToggle) closeMenu();
         });
     });
 
-    // Sticky Header & Active States
-    const header = document.getElementById('header');
-    
+    // Sticky Header
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
@@ -47,18 +54,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // FAQ Accordion Logic
     const faqQuestions = document.querySelectorAll('.faq-question');
-    
+
     faqQuestions.forEach(question => {
         question.addEventListener('click', () => {
             const answer = question.nextElementSibling;
             const isActive = question.classList.contains('active');
-            
-            // Close all other open FAQs
+
+            // Close all open FAQs
             faqQuestions.forEach(q => {
                 q.classList.remove('active');
                 q.nextElementSibling.style.maxHeight = null;
             });
-            
+
             // Open the clicked one if it wasn't active
             if (!isActive) {
                 question.classList.add('active');
@@ -74,16 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const btn = form.querySelector('.btn-submit');
             const originalText = btn.innerHTML;
-            
+
             btn.innerHTML = 'Processing...';
             btn.style.opacity = '0.7';
-            
+
             setTimeout(() => {
                 btn.innerHTML = 'Inquiry Sent <i class="fas fa-check"></i>';
                 btn.style.backgroundColor = '#111';
                 btn.style.opacity = '1';
                 form.reset();
-                
+
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.style.backgroundColor = '';

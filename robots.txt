@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block staging/dev paths (none currently, but future-proof)
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://apolloscleaners.com/sitemap.xml
